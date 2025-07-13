@@ -1,0 +1,14 @@
+{
+  "name": "nexa-ledger",
+  "version": "1.0.0",
+  "description": "Advanced Personal Bookkeeping Services website",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx http-server . -p 3000 -o",
+    "start": "npx http-server . -p 3000 -o",
+    "build": "echo 'Static site - no build process needed'"
+  },
+  "keywords": ["bookkeeping", "finance", "personal", "services"],
+  "author": "",
+  "license": "ISC"
+}
