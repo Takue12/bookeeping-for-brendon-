@@ -60,8 +60,8 @@
 
   <!-- Hero Section -->
 <section class="relative z-10 min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-blue-950 via-slate-900 to-purple-900 overflow-hidden">
-  <!-- Glowing SVG Background -->
-  <svg class="absolute inset-0 w-full h-full pointer-events-none z-0" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <!-- Animated Glow SVG Background -->
+  <svg class="absolute inset-0 w-full h-full pointer-events-none z-0" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <radialGradient id="glow" cx="50%" cy="50%" r="50%">
         <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.4"/>
@@ -69,12 +69,19 @@
       </radialGradient>
     </defs>
     <rect width="100%" height="100%" fill="url(#glow)">
-      <animate attributeName="opacity" values="0.6;0.2;0.6" dur="8s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0.6;0.2;0.6" dur="10s" repeatCount="indefinite" />
     </rect>
   </svg>
 
-  <div class="max-w-7xl mx-auto grid md:grid-cols-2 items-center gap-12 relative z-10 px-6">
-    <!-- Hero Text -->
+  <!-- Floating Bubbles -->
+  <div class="absolute inset-0 z-0">
+    <div class="absolute w-24 h-24 bg-purple-600 opacity-20 rounded-full animate-pulse top-20 left-10 blur-2xl"></div>
+    <div class="absolute w-16 h-16 bg-blue-500 opacity-10 rounded-full animate-bounce bottom-16 right-20 blur-2xl"></div>
+    <div class="absolute w-28 h-28 bg-cyan-400 opacity-10 rounded-full animate-ping top-1/2 left-1/2 blur-2xl"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 items-center gap-12 relative z-10 px-6 py-20">
+    <!-- Text Section -->
     <div class="text-center md:text-left space-y-6" data-aos="fade-right">
       <h1 class="text-5xl md:text-6xl font-bold leading-tight">
         <span class="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
@@ -82,35 +89,37 @@
         </span><br>
         <span class="text-white drop-shadow-lg">Bookkeeping Solutions</span>
       </h1>
-      <p class="text-xl text-gray-300 max-w-xl">
-        Manage your personal finances with clarity and confidence — NexaLedger combines human expertise with AI automation to deliver next-gen financial tracking and reporting.
+      <p class="text-lg text-gray-300 max-w-xl mx-auto md:mx-0">
+        NexaLedger gives you real-time control of your finances with advanced analytics, automated insights, and sleek dashboards.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-        <a href="#contact" class="px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md text-white font-semibold border border-white/20 hover:bg-white/20 transition-all shadow-lg">
+        <a href="#contact" class="px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md text-white font-semibold border border-white/20 hover:bg-white/20 transition-all shadow-xl hover:scale-105 duration-300">
           Get Started
         </a>
-        <a href="#services" class="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:opacity-90 transition-all shadow-lg">
+        <a href="#services" class="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:opacity-90 hover:scale-105 transition-all shadow-lg duration-300">
           See Services
         </a>
       </div>
     </div>
 
-    <!-- Mock Dashboard Preview -->
-    <div class="relative bg-slate-800 rounded-3xl p-6 shadow-2xl border border-white/10 max-w-[500px] w-full" data-aos="fade-left" data-aos-delay="200">
+    <!-- Dashboard Preview -->
+    <div class="relative bg-slate-800/60 backdrop-blur-md border border-purple-500/30 rounded-3xl p-6 shadow-[0_0_30px_rgba(139,92,246,0.3)] max-w-[500px] w-full" data-aos="fade-left" data-aos-delay="200">
       <div class="flex justify-between items-center mb-4">
         <h4 class="text-lg font-semibold text-white">Expense Tracker</h4>
         <span class="text-xs text-green-400 bg-green-900/40 px-2 py-1 rounded-full">Live</span>
       </div>
 
-      <!-- Jagged Line Graph -->
-      <svg viewBox="0 0 300 100" class="w-full h-24 mb-6">
-        <polyline fill="none" stroke="#3b82f6" stroke-width="3"
-          points="0,80 20,60 40,70 60,50 80,65 100,40 120,50 140,30 160,45 180,25 200,40 220,35 240,30 260,50 280,35 300,45">
-          <animate attributeName="stroke-dashoffset" from="100" to="0" dur="2s" repeatCount="indefinite" />
-        </polyline>
-      </svg>
+      <!-- Graph with background blur -->
+      <div class="relative">
+        <div class="absolute inset-0 blur-md opacity-20 rounded-lg bg-gradient-to-tr from-blue-400 to-purple-600"></div>
+        <svg viewBox="0 0 300 100" class="w-full h-24 mb-6 relative z-10">
+          <polyline fill="none" stroke="#3b82f6" stroke-width="3"
+            points="0,80 20,60 40,70 60,50 80,65 100,40 120,50 140,30 160,45 180,25 200,40 220,35 240,30 260,50 280,35 300,45">
+          </polyline>
+        </svg>
+      </div>
 
-      <!-- Summary Cards -->
+      <!-- Stats -->
       <div class="grid grid-cols-2 gap-4 text-sm">
         <div class="bg-slate-700 rounded-xl p-4 text-white shadow-inner">
           <div class="text-gray-400">Current Spend</div>
@@ -122,7 +131,7 @@
         </div>
       </div>
 
-      <!-- Budget Bar -->
+      <!-- Budget Progress Bar -->
       <div class="mt-6">
         <div class="text-gray-300 text-sm mb-1">Budget Utilization</div>
         <div class="w-full bg-slate-700 rounded-full h-3">
