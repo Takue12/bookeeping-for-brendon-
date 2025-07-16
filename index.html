@@ -670,11 +670,15 @@
 </div>
 
 <script>
+ <script>
   const qa = {
-    "hello": "Hi! I’m NexaBot. How can I help you with bookkeeping today?",
-    "services": "We offer personal and small business bookkeeping, expense tracking, and income categorization.",
-    "pricing": "Basic plan is $20/month, or $200/year (save 2 months).",
-    "contact": "You can call us at 728-900-8875 or email: nexaledger@email.com"
+    "hello": "Hi there! I'm NexaBot. How can I assist you with your bookkeeping needs today?",
+    "services": "We provide personal & small business bookkeeping, monthly reports, and income/expense categorization.",
+    "pricing": "Our plans start at $20/month or $200/year (save 2 months!).",
+    "contact": "Reach us at 728-900-8875 or email nexaledger@email.com.",
+    "training": "We offer beginner-friendly bookkeeping training, including video tutorials and one-on-one guidance!",
+    "training options": "1️⃣ Video tutorials (YouTube)\n2️⃣ One-on-one Zoom sessions\n3️⃣ Downloadable guides\n\nWould you like to get started with one?",
+    "how to start bookkeeping": "We’ll walk you through step-by-step how to track income, expenses, and keep everything organized for tax season. Would you like a training video or a call?"
   };
 
   function toggleChatbot() {
@@ -691,8 +695,14 @@
       const chatLog = document.getElementById('chat-log');
       chatLog.innerHTML += `<div><strong>You:</strong> ${msg}</div>`;
 
-      const response = qa[msg] || "Sorry, I didn't understand. Try asking about 'services', 'pricing', or 'contact'.";
-      chatLog.innerHTML += `<div><strong>NexaBot:</strong> ${response}</div>`;
+      let response = qa[msg];
+      if (!response) {
+        // Try to find match by keyword
+        const foundKey = Object.keys(qa).find(key => msg.includes(key));
+        response = foundKey ? qa[foundKey] : "🤔 I'm not sure. Try asking about 'training', 'services', or 'pricing'.";
+      }
+
+      chatLog.innerHTML += `<div><strong>NexaBot:</strong> ${response.replace(/\n/g, '<br>')}</div>`;
       input.value = '';
       chatLog.scrollTop = chatLog.scrollHeight;
     }
