@@ -201,6 +201,41 @@ document.addEventListener('DOMContentLoaded', () => {
         card.style.animationDelay = `${index * 0.1}s`;
     });
 });
+// AI ChatBot Functionality
+document.getElementById('send-btn')?.addEventListener('click', sendMessage);
+document.getElementById('user-input')?.addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') sendMessage();
+});
+
+async function sendMessage() {
+  const input = document.getElementById('user-input');
+  const chatLog = document.getElementById('chat-log');
+  const userMessage = input.value.trim();
+
+  if (!userMessage) return;
+
+  chatLog.innerHTML += `<div class="chat-message user-message"><strong>You:</strong> ${userMessage}</div>`;
+  input.value = '';
+  document.getElementById('typing').style.display = 'flex';
+
+  try {
+    const response = await fetch('http://localhost:3001/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: userMessage })
+    });
+
+    const data = await response.json();
+    chatLog.innerHTML += `<div class="chat-message bot-message"><strong>NexaBot:</strong> ${data.reply}</div>`;
+  } catch (error) {
+    chatLog.innerHTML += `<div class="chat-message bot-message"><strong>NexaBot:</strong> Sorry, I couldn't connect to the AI.</div>`;
+  }
+
+  document.getElementById('typing').style.display = 'none';
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+
 
 // Performance optimization: throttle scroll events
 function throttle(func, limit) {
