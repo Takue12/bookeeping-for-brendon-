@@ -670,20 +670,36 @@
 </div>
 
 <script>
- <script>
+<!-- CHATBOT TOGGLE BUTTON -->
+<button onclick="toggleChatbot()" style="position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; border: none; padding: 12px 20px; border-radius: 50px; font-weight: bold; z-index: 1000;">
+  💬 Chat with NexaBot
+</button>
+
+<!-- CHATBOT WINDOW -->
+<div id="chat-window" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 320px; max-height: 500px; background: white; border: 2px solid #10b981; border-radius: 15px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); overflow: hidden; font-family: sans-serif; z-index: 1000;">
+  <div style="background: #10b981; color: white; padding: 12px 16px; font-weight: bold; text-align: center;">
+    NexaBot 💼
+  </div>
+  <div id="chat-log" style="padding: 12px 16px; height: 300px; overflow-y: auto; font-size: 14px; color: #111; background: #f9f9f9;"></div>
+  <div style="padding: 8px 12px; background: #f0f0f0; display: flex;">
+    <input id="user-input" onkeydown="handleKey(event)" type="text" placeholder="Ask me anything..." style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 8px;"/>
+  </div>
+</div>
+
+<script>
   const qa = {
     "hello": "Hi there! I'm NexaBot. How can I assist you with your bookkeeping needs today?",
     "services": "We provide personal & small business bookkeeping, monthly reports, and income/expense categorization.",
     "pricing": "Our plans start at $20/month or $200/year (save 2 months!).",
     "contact": "Reach us at 728-900-8875 or email nexaledger@email.com.",
     "training": "We offer beginner-friendly bookkeeping training, including video tutorials and one-on-one guidance!",
-    "training options": "1️⃣ Video tutorials (YouTube)\n2️⃣ One-on-one Zoom sessions\n3️⃣ Downloadable guides\n\nWould you like to get started with one?",
+    "training options": "1️⃣ Video tutorials (YouTube)<br>2️⃣ One-on-one Zoom sessions<br>3️⃣ Downloadable guides<br><br>Would you like to get started with one?",
     "how to start bookkeeping": "We’ll walk you through step-by-step how to track income, expenses, and keep everything organized for tax season. Would you like a training video or a call?"
   };
 
   function toggleChatbot() {
     const chat = document.getElementById('chat-window');
-    chat.style.display = (chat.style.display === 'none') ? 'block' : 'none';
+    chat.style.display = (chat.style.display === 'none' || chat.style.display === '') ? 'block' : 'none';
   }
 
   function handleKey(e) {
@@ -697,17 +713,17 @@
 
       let response = qa[msg];
       if (!response) {
-        // Try to find match by keyword
         const foundKey = Object.keys(qa).find(key => msg.includes(key));
-        response = foundKey ? qa[foundKey] : "🤔 I'm not sure. Try asking about 'training', 'services', or 'pricing'.";
+        response = foundKey ? qa[foundKey] : "🤔 I'm not sure. Try asking about <em>'training'</em>, <em>'services'</em>, or <em>'pricing'</em>.";
       }
 
-      chatLog.innerHTML += `<div><strong>NexaBot:</strong> ${response.replace(/\n/g, '<br>')}</div>`;
+      chatLog.innerHTML += `<div><strong>NexaBot:</strong> ${response}</div>`;
       input.value = '';
       chatLog.scrollTop = chatLog.scrollHeight;
     }
   }
 </script>
+
 
 </body>
 </html>
