@@ -687,14 +687,90 @@
 </div>
 
 <script>
+ <!-- NexaBot Chatbot Styles & Script -->
+<style>
+  #chat-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 1000;
+  }
+
+  #chat-window {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    max-height: 500px;
+    background: white;
+    border: 2px solid #10b981;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    z-index: 999;
+    font-family: Arial, sans-serif;
+  }
+
+  #chat-header {
+    background: #10b981;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  #chat-log {
+    padding: 12px;
+    height: 300px;
+    overflow-y: auto;
+    background: #f9f9f9;
+    color: #222;
+    font-size: 14px;
+  }
+
+  #chat-input-area {
+    display: flex;
+    padding: 10px;
+    background: #eee;
+  }
+
+  #user-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+</style>
+
+<!-- Chat UI -->
+<button id="chat-toggle" onclick="toggleChatbot()">💬 Chat with NexaBot</button>
+<div id="chat-window">
+  <div id="chat-header">NexaBot 💼</div>
+  <div id="chat-log"></div>
+  <div id="chat-input-area">
+    <input id="user-input" type="text" placeholder="Ask me anything..." onkeydown="handleKey(event)" />
+  </div>
+</div>
+
+<!-- Chatbot Script -->
+<script>
   const qa = {
-    "hello": "Hi there! I'm NexaBot. How can I assist you with your bookkeeping needs today?",
-    "services": "We provide personal & small business bookkeeping, monthly reports, and income/expense categorization.",
-    "pricing": "Our plans start at $20/month or $200/year (save 2 months!).",
-    "contact": "Reach us at 728-900-8875 or email nexaledger@email.com.",
-    "training": "We offer beginner-friendly bookkeeping training, including video tutorials and one-on-one guidance!",
-    "training options": "1️⃣ Video tutorials (YouTube)<br>2️⃣ One-on-one Zoom sessions<br>3️⃣ Downloadable guides<br><br>Would you like to get started with one?",
-    "how to start bookkeeping": "We’ll walk you through step-by-step how to track income, expenses, and keep everything organized for tax season. Would you like a training video or a call?"
+    "hello": "Hi there! I'm NexaBot. How can I help with bookkeeping today?",
+    "services": "We offer personal & business bookkeeping, monthly reports, and categorization.",
+    "pricing": "Plans start at $20/month or $200/year (save 2 months!).",
+    "contact": "Call us at 728-900-8875 or email nexaledger@email.com.",
+    "training": "We offer: video tutorials, one-on-one Zoom, and guides. Want to begin?",
+    "training options": "1️⃣ Video tutorials\n2️⃣ Zoom session\n3️⃣ PDF guides\nWhich do you prefer?",
+    "how to start bookkeeping": "We’ll guide you through tracking income/expenses and organizing for taxes."
   };
 
   function toggleChatbot() {
@@ -714,10 +790,10 @@
       let response = qa[msg];
       if (!response) {
         const foundKey = Object.keys(qa).find(key => msg.includes(key));
-        response = foundKey ? qa[foundKey] : "🤔 I'm not sure. Try asking about <em>'training'</em>, <em>'services'</em>, or <em>'pricing'</em>.";
+        response = foundKey ? qa[foundKey] : "🤔 I'm not sure yet. Try asking about 'training', 'services', or 'pricing'.";
       }
 
-      chatLog.innerHTML += `<div><strong>NexaBot:</strong> ${response}</div>`;
+      chatLog.innerHTML += `<div><strong>NexaBot:</strong> ${response.replace(/\n/g, '<br>')}</div>`;
       input.value = '';
       chatLog.scrollTop = chatLog.scrollHeight;
     }
