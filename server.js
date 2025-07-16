@@ -1,44 +1,45 @@
+// Load environment variables from .env
 require('dotenv').config();
+
+// Import necessary modules
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { Configuration, OpenAIApi } = require('openai');
 
+// Set up Express server
 const app = express();
 const port = 3001;
 
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// ✅ Initialize OpenAI with Configuration (correct way)
+// Initialize OpenAI API
 const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY, // Your key must be in your .env file like: OPENAI_API_KEY=sk-...
 });
 const openai = new OpenAIApi(configuration);
 
-// ✅ POST endpoint to handle chat messages
+// POST endpoint for chatbot
 app.post('/chat', async (req, res) => {
-  const userMessage = req.body.message;
+  const { prompt } = req.body;
 
   try {
-    const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo', // or 'gpt-4'
-      messages: [
-        { role: 'system', content: "You are NexaBot, a helpful AI bookkeeping assistant." },
-        { role: 'user', content: userMessage }
-      ]
+    const completion = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: prompt }],
     });
 
-    const reply = response.choices[0].message.content;
+    const reply = completion.data.choices[0].message.content;
     res.json({ reply });
-
   } catch (error) {
-    console.error('OpenAI API error:', error);
-    res.status(500).json({ error: 'Failed to get response from AI.' });
+    console.error("OpenAI API error:", error.message);
+    res.status(500).json({ error: "Failed to get response from AI." });
   }
 });
 
-// ✅ Start server
+// Start server
 app.listen(port, () => {
   console.log(`✅ NexaBot backend running at http://localhost:${port}`);
 });
