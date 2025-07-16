@@ -659,5 +659,45 @@
         createParticles(100);
         drawParticles();
     </script>
+    <!-- Chatbot Widget -->
+<div id="chatbot-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+  <button onclick="toggleChatbot()" style="background-color:#0ea5e9; color:white; padding:10px 20px; border:none; border-radius:25px;">💬 Chat</button>
+  <div id="chat-window" style="display:none; width:300px; height:400px; background:white; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.3); margin-top:10px; overflow:hidden;">
+    <div style="background:#0ea5e9; color:white; padding:10px; font-weight:bold;">NexaBot</div>
+    <div id="chat-log" style="height:300px; padding:10px; overflow-y:auto; font-size:14px;"></div>
+    <input id="user-input" type="text" placeholder="Ask me..." style="width:100%; padding:10px; border:none; border-top:1px solid #ccc;" onkeydown="handleKey(event)">
+  </div>
+</div>
+
+<script>
+  const qa = {
+    "hello": "Hi! I’m NexaBot. How can I help you with bookkeeping today?",
+    "services": "We offer personal and small business bookkeeping, expense tracking, and income categorization.",
+    "pricing": "Basic plan is $20/month, or $200/year (save 2 months).",
+    "contact": "You can call us at 728-900-8875 or email: nexaledger@email.com"
+  };
+
+  function toggleChatbot() {
+    const chat = document.getElementById('chat-window');
+    chat.style.display = (chat.style.display === 'none') ? 'block' : 'none';
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter') {
+      const input = document.getElementById('user-input');
+      const msg = input.value.trim().toLowerCase();
+      if (!msg) return;
+
+      const chatLog = document.getElementById('chat-log');
+      chatLog.innerHTML += `<div><strong>You:</strong> ${msg}</div>`;
+
+      const response = qa[msg] || "Sorry, I didn't understand. Try asking about 'services', 'pricing', or 'contact'.";
+      chatLog.innerHTML += `<div><strong>NexaBot:</strong> ${response}</div>`;
+      input.value = '';
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+  }
+</script>
+
 </body>
 </html>
