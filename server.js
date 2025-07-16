@@ -7,33 +7,33 @@ const cors = require('cors');
 const app = express();
 const port = 3001;
 
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
-// ✅ OpenAI API setup
+// ✅ Initialize OpenAI client
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
-// ✅ POST endpoint for chat
+// ✅ POST route for chatbot
 app.post('/chat', async (req, res) => {
   const { prompt } = req.body;
 
   try {
-    const chatResponse = await openai.chat.completions.create({
+    const response = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.7
+      messages: [{ role: 'user', content: prompt }]
     });
 
-    const reply = chatResponse.choices[0].message.content;
-    res.json({ reply });
+    res.json({ reply: response.choices[0].message.content });
   } catch (error) {
-    console.error('OpenAI API error:', error);
+    console.error('❌ OpenAI API error:', error.message);
     res.status(500).json({ error: 'Failed to get response from AI.' });
   }
 });
 
+// ✅ Start server
 app.listen(port, () => {
   console.log(`✅ NexaBot backend running at http://localhost:${port}`);
 });
