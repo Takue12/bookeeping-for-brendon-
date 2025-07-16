@@ -1,43 +1,35 @@
 const express = require('express');
-const nodemailer = require('nodemailer');
 const cors = require('cors');
-const app = express();
+const { Configuration, OpenAIApi } = require('openai');
 require('dotenv').config();
 
+const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post('/contact', async (req, res) => {
-  const { fullName, email, service, message } = req.body;
+const openai = new OpenAIApi(new Configuration({
+  apiKey: process.env.OPENAI_API_KEY
+}));
 
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL, // Your Gmail address
-      pass: process.env.PASSWORD // Your Gmail App Password
-    }
-  });
-
-  const mailOptions = {
-    from: email,
-    to: process.env.EMAIL,
-    subject: 'New Contact Message - NexaLedger',
-    html: `
-      <h3>Contact Form Submission</h3>
-      <p><strong>Name:</strong> ${fullName}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Service:</strong> ${service}</p>
-      <p><strong>Message:</strong><br>${message}</p>
-    `
-  };
+app.post('/chat', async (req, res) => {
+  const userMessage = req.body.message;
 
   try {
-    await transporter.sendMail(mailOptions);
-    res.status(200).json({ message: 'Message sent successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error sending message', error });
+    const response = await openai.createChatCompletion({
+      model: 'gpt-4',
+      messages: [
+        { role: 'system', content: "You are NexaBot, a friendly and smart bookkeeping assistant powered by QuickBooks. Answer clearly and concisely." },
+        { role: 'user', content: userMessage }
+      ]
+    });
+
+    res.json({ reply: response.data.choices[0].message.content });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Something went wrong' });
   }
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(3001, () => {
+  console.log('✅ NexaBot backend running on http://localhost:3001');
+});
