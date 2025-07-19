@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexaLedger - Advanced Personal Bookkeeping Services</title>
+    <title>NexaLedger - Personal Bookkeeping Services</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,306 +11,149 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <style>
         :root {
-            --primary: #0ea5e9;
-            --secondary: #8b5cf6;
-            --accent: #10b981;
-            --dark: #0f172a;
-            --darker: #020617;
+            --primary: #4a86e8; /* Soft blue */
+            --secondary: #5dbea3; /* Soft teal */
+            --accent: #9c89cc; /* Soft purple */
+            --light: #f8f9fa; /* Light background */
+            --text: #2c3e50; /* Dark text */
+            --text-light: #777777; /* Light text */
         }
         
         body {
-            background: linear-gradient(135deg, var(--darker), var(--dark));
-            color: white;
+            background: var(--light);
+            color: var(--text);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
         
         .gradient-bg {
-            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(74, 134, 232, 0.05), rgba(93, 190, 163, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
-        .glow {
-            box-shadow: 0 0 20px rgba(14, 165, 233, 0.5);
-        }
-        
-        .hologram-effect {
+        .profile-overlay {
             position: relative;
-            overflow: hidden;
         }
         
-        .hologram-effect::before {
+        .profile-overlay::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, 
-                transparent, 
-                rgba(14, 165, 233, 0.1), 
-                transparent, 
-                rgba(139, 92, 246, 0.1),
-                transparent
-            );
-            animation: hologram 8s infinite linear;
-            z-index: -1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+            z-index: 1;
         }
         
-        @keyframes hologram {
-            0% { transform: translate(-25%, -25%) rotate(0deg); }
-            100% { transform: translate(25%, 25%) rotate(360deg); }
+        .profile-img {
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 5px solid white;
         }
         
-        .pulse {
-            animation: pulse 2s infinite;
+        .service-card {
+            transition: all 0.3s ease;
         }
         
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
         
-        .neon-text {
-            text-shadow: 0 0 10px rgba(14, 165, 233, 0.7), 0 0 20px rgba(14, 165, 233, 0.5);
+        .testimonial-card {
+            background: white;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
-        .floating {
-            animation: floating 6s ease-in-out infinite;
-        }
-        
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        /* Chatbot Styles */
-        #chat-toggle {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
+        .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            border: none;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 24px;
-            z-index: 1000;
-            box-shadow: 0 0 20px rgba(14, 165, 233, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: pulse 2s infinite;
+            transition: all 0.3s ease;
         }
         
-        #chat-window {
-            display: none;
-            position: fixed;
-            bottom: 120px;
-            right: 30px;
-            width: 350px;
-            max-height: 500px;
-            background: rgba(15, 23, 42, 0.95);
-            border: 1px solid rgba(14, 165, 233, 0.3);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            z-index: 999;
-            font-family: 'Inter', sans-serif;
-            backdrop-filter: blur(10px);
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(74, 134, 232, 0.3);
         }
         
-        #chat-header {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        #chat-log {
-            padding: 15px;
-            height: 300px;
-            overflow-y: auto;
-            background: rgba(2, 6, 23, 0.7);
-            color: #e2e8f0;
-            font-size: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .chat-message {
-            padding: 10px 15px;
-            border-radius: 18px;
-            max-width: 80%;
-            animation: fadeIn 0.3s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .user-message {
-            background: rgba(14, 165, 233, 0.2);
-            border: 1px solid rgba(14, 165, 233, 0.3);
-            align-self: flex-end;
-            border-bottom-right-radius: 5px;
-        }
-        
-        .bot-message {
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
-        }
-        
-        #chat-input-area {
-            display: flex;
-            padding: 12px;
-            background: rgba(15, 23, 42, 0.8);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        #user-input {
-            flex: 1;
-            padding: 12px 15px;
-            background: rgba(2, 6, 23, 0.7);
-            border: 1px solid rgba(14, 165, 233, 0.2);
-            border-radius: 25px;
-            color: white;
-            font-size: 14px;
-            outline: none;
-        }
-        
-        #user-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(14, 165, 233, 0.3);
-        }
-        
-        .send-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-left: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .typing-indicator {
-            display: none;
-            padding: 10px;
-            font-size: 14px;
-            color: #94a3b8;
-        }
-        
-        .typing-indicator span {
+        .section-title {
+            position: relative;
             display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: #94a3b8;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background: var(--secondary);
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--secondary);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -39px;
+            top: 0;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            margin: 0 2px;
-            animation: typing 1.4s infinite;
-        }
-        
-        .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        
-        .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        
-        @keyframes typing {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0); }
-        }
-        
-        /* Custom Scrollbar */
-        #chat-log::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        #chat-log::-webkit-scrollbar-track {
-            background: rgba(2, 6, 23, 0.5);
-        }
-        
-        #chat-log::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 3px;
-        }
-        
-        /* Holographic Grid */
-        .hologrid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(90deg, rgba(14, 165, 233, 0.05) 1px, transparent 1px),
-                linear-gradient(180deg, rgba(14, 165, 233, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        /* Particles */
-        #particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+            background: white;
+            border: 4px solid var(--secondary);
         }
     </style>
 </head>
 <body class="overflow-x-hidden">
-    <!-- Holographic Background Elements -->
-    <div class="hologrid"></div>
-    <div id="particles"></div>
-    
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 gradient-bg py-4">
+    <nav class="fixed w-full z-50 bg-white py-4 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-3">
                     <div class="logo-container">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center glow">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-400 to-teal-400 flex items-center justify-center">
                             <svg width="24" height="24" viewBox="0 0 24 24" class="text-white">
                                 <path fill="currentColor" d="M3 22v-20l18 10-18 10z"/>
                             </svg>
                         </div>
                     </div>
-                    <span class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent neon-text">
+                    <span class="text-2xl font-bold text-gray-800">
                         NexaLedger
                     </span>
                 </div>
                 <div class="hidden md:flex space-x-8">
-                    <a href="#services" class="text-gray-300 hover:text-blue-400 transition-colors duration-200">Services</a>
-                    <a href="#about" class="text-gray-300 hover:text-blue-400 transition-colors duration-200">About</a>
-                    <a href="#pricing" class="text-gray-300 hover:text-blue-400 transition-colors duration-200">Pricing</a>
-                    <a href="#contact" class="text-gray-300 hover:text-blue-400 transition-colors duration-200">Contact</a>
+                    <a href="#about" class="text-gray-600 hover:text-blue-500 transition-colors duration-200">About</a>
+                    <a href="#services" class="text-gray-600 hover:text-blue-500 transition-colors duration-200">Services</a>
+                    <a href="#testimonials" class="text-gray-600 hover:text-blue-500 transition-colors duration-200">Testimonials</a>
+                    <a href="#contact" class="text-gray-600 hover:text-blue-500 transition-colors duration-200">Contact</a>
                 </div>
-                <a href="#contact" class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-2 rounded-full font-medium hover:brightness-110 transition-all duration-200 shadow-lg glow">
+                <a href="#contact" class="btn-primary px-6 py-2 rounded-full font-medium">
                     Get Started
                 </a>
             </div>
@@ -318,74 +161,114 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center px-4 pt-16">
+    <section class="min-h-screen flex items-center justify-center px-4 pt-16 bg-gradient-to-br from-white to-blue-50">
         <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
             <!-- Text Content -->
             <div class="text-center md:text-left" data-aos="fade-right">
-                <h1 class="text-5xl md:text-6xl font-bold leading-tight text-white">
-                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent neon-text">Advanced</span> 
-                    Financial Management
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight text-gray-800 mb-4">
+                    Personal Bookkeeping Services for <span class="text-blue-500">Financial Freedom</span>
                 </h1>
-                <p class="text-xl md:text-2xl text-gray-300 mt-6 max-w-xl">
-                    AI-powered bookkeeping solutions that transform how you manage finances. Focus on your business while we handle the numbers.
+                <p class="text-xl text-gray-600 mt-6 max-w-xl">
+                    Hi, I'm Brendon Mandizvidza. I help individuals take control of their finances through expert bookkeeping and budgeting.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mt-8">
-                    <a href="#contact" class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-full font-medium flex items-center justify-center hover:brightness-110 transition-all duration-200 shadow-lg glow group">
-                        <span>Book a Free Consultation</span>
-                        <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="mt-8">
+                    <a href="#contact" class="btn-primary px-8 py-3 rounded-full font-medium inline-flex items-center mr-4">
+                        <span>Book a Consultation</span>
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                         </svg>
                     </a>
-                    <a href="#services" class="border-2 border-blue-500 text-blue-400 px-6 py-3 rounded-full font-medium hover:bg-blue-500/10 transition-all duration-200">
+                    <a href="#services" class="border-2 border-blue-500 text-blue-500 px-6 py-3 rounded-full font-medium hover:bg-blue-50 transition-all duration-200">
                         Explore Services
                     </a>
                 </div>
             </div>
 
-            <!-- Holographic Dashboard -->
-            <div class="hidden md:block hologram-effect" data-aos="fade-left">
-                <div class="rounded-2xl p-6 bg-slate-900/70 backdrop-blur-md border border-blue-500/20 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-r from-blue-900/10 to-purple-900/10 z-0"></div>
-                    <div class="relative z-10">
-                        <div class="flex justify-between items-center mb-6">
-                            <div>
-                                <h3 class="text-xl font-semibold text-white">Financial Dashboard</h3>
-                                <p class="text-blue-400 text-sm">Real-time Insights</p>
-                            </div>
-                            <div class="bg-blue-500/10 rounded-full px-3 py-1 text-blue-400 text-sm">Live</div>
+            <!-- Profile Photo -->
+            <div class="profile-overlay rounded-2xl overflow-hidden" data-aos="fade-left">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-400 to-teal-300 opacity-20 rounded-2xl"></div>
+                    <div class="relative z-10 flex justify-center p-6">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" 
+                             alt="Brendon Mandizvidza" 
+                             class="profile-img w-80 h-80 object-cover rounded-full">
+                    </div>
+                    <div class="absolute bottom-6 left-0 right-0 text-center z-10">
+                        <h3 class="text-2xl font-bold text-gray-800">Brendon Mandizvidza</h3>
+                        <p class="text-blue-500">Bookkeeping Specialist</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Decorative elements -->
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-blue-50 to-transparent"></div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800 section-title">
+                    My Journey
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    From Zimbabwe to financial expertise - my passion for helping others achieve financial freedom
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="timeline" data-aos="fade-right">
+                    <div class="timeline-item">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Roots in Zimbabwe</h3>
+                        <p class="text-gray-600">
+                            Born in September 2004 in Zimbabwe, I grew up understanding the value of money and the importance of careful financial management in challenging economic environments.
+                        </p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Passion for Finance</h3>
+                        <p class="text-gray-600">
+                            From an early age, I was fascinated by how money works. I taught myself budgeting techniques and helped family members organize their finances.
+                        </p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Education & Growth</h3>
+                        <p class="text-gray-600">
+                            As a student, I pursued financial studies while developing practical bookkeeping skills. I learned that organized finances create freedom and opportunity.
+                        </p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">NexaLedger</h3>
+                        <p class="text-gray-600">
+                            Today, I combine my passion with professional expertise to help individuals gain control of their finances through personalized bookkeeping services.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-8 rounded-2xl" data-aos="fade-left">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Why I Do This</h3>
+                    <p class="text-gray-600 mb-6">
+                        I believe that financial clarity is the foundation of a secure and fulfilling life. Growing up in Zimbabwe taught me resilience and the true value of money. Now, I'm dedicated to helping others avoid financial stress through organized bookkeeping and smart budgeting.
+                    </p>
+                    <div class="flex items-center mt-8">
+                        <div class="bg-blue-100 p-4 rounded-full mr-4">
+                            <i class="fas fa-lightbulb text-blue-500 text-2xl"></i>
                         </div>
-                        
-                        <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="gradient-bg rounded-xl p-4">
-                                <p class="text-gray-400 text-sm">Income</p>
-                                <p class="text-white text-xl font-semibold">$12,450</p>
-                                <p class="text-green-400 text-xs mt-1">↑ 12% from last month</p>
-                            </div>
-                            <div class="gradient-bg rounded-xl p-4">
-                                <p class="text-gray-400 text-sm">Expenses</p>
-                                <p class="text-white text-xl font-semibold">$8,210</p>
-                                <p class="text-red-400 text-xs mt-1">↑ 3% from last month</p>
-                            </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">My Mission</h4>
+                            <p class="text-gray-600">To empower individuals with financial clarity and control</p>
                         </div>
-                        
-                        <div class="h-40 bg-slate-800/50 rounded-xl mb-4 relative overflow-hidden">
-                            <div class="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-blue-500/20 to-transparent"></div>
-                            <!-- Chart bars -->
-                            <div class="absolute bottom-0 left-4 w-8 bg-blue-400 rounded-t" style="height: 60%"></div>
-                            <div class="absolute bottom-0 left-16 w-8 bg-blue-400 rounded-t" style="height: 80%"></div>
-                            <div class="absolute bottom-0 left-28 w-8 bg-blue-400 rounded-t" style="height: 45%"></div>
-                            <div class="absolute bottom-0 left-40 w-8 bg-purple-500 rounded-t" style="height: 70%"></div>
-                            <div class="absolute bottom-0 left-52 w-8 bg-purple-500 rounded-t" style="height: 90%"></div>
-                            <div class="absolute bottom-0 left-64 w-8 bg-purple-500 rounded-t" style="height: 65%"></div>
+                    </div>
+                    <div class="flex items-center mt-6">
+                        <div class="bg-teal-100 p-4 rounded-full mr-4">
+                            <i class="fas fa-heart text-teal-500 text-2xl"></i>
                         </div>
-                        
-                        <div class="flex justify-between text-gray-400 text-sm">
-                            <span>Mon</span>
-                            <span>Tue</span>
-                            <span>Wed</span>
-                            <span>Thu</span>
-                            <span>Fri</span>
-                            <span>Sat</span>
+                        <div>
+                            <h4 class="font-bold text-gray-800">My Values</h4>
+                            <p class="text-gray-600">Integrity, precision, and personalized service</p>
                         </div>
                     </div>
                 </div>
@@ -394,319 +277,339 @@
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="py-24 px-4 relative">
-        <div class="max-w-7xl mx-auto text-center mb-16" data-aos="fade-up">
-            <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">
-                <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent neon-text">Smart Financial</span> Solutions
-            </h2>
-            <p class="text-xl text-gray-300 max-w-2xl mx-auto">
-                AI-enhanced services designed for modern financial management
-            </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            <!-- Service Cards -->
-            <div class="gradient-bg rounded-2xl p-6 hover:shadow-xl transition-all duration-300 group" data-aos="fade-up">
-                <div class="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mb-4 glow">
-                    <i class="fas fa-chart-line text-xl text-white"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-white mb-2">Real-time Analytics</h3>
-                <p class="text-gray-300 text-sm">
-                    Instant insights into your financial health with interactive dashboards and predictive analytics.
+    <section id="services" class="py-24 px-4 bg-blue-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800 section-title">
+                    My Services
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Custom bookkeeping solutions tailored to your personal financial needs
                 </p>
-                <div class="mt-4 pt-4 border-t border-gray-700/50">
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i> Live expense tracking</li>
-                        <li class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i> Predictive cash flow</li>
-                        <li class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i> Customizable reports</li>
-                    </ul>
-                </div>
             </div>
             
-            <div class="gradient-bg rounded-2xl p-6 hover:shadow-xl transition-all duration-300 group" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-14 h-14 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mb-4 glow">
-                    <i class="fas fa-robot text-xl text-white"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-white mb-2">AI Automation</h3>
-                <p class="text-gray-300 text-sm">
-                    Machine learning algorithms that categorize transactions and detect anomalies automatically.
-                </p>
-                <div class="mt-4 pt-4 border-t border-gray-700/50">
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i> Smart categorization</li>
-                        <li class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i> Fraud detection</li>
-                        <li class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i> Receipt scanning</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="gradient-bg rounded-2xl p-6 hover:shadow-xl transition-all duration-300 group" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-14 h-14 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-full flex items-center justify-center mb-4 glow">
-                    <i class="fas fa-file-invoice-dollar text-xl text-white"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-white mb-2">Tax Optimization</h3>
-                <p class="text-gray-300 text-sm">
-                    Maximize deductions and stay compliant with automated tax preparation and filing.
-                </p>
-                <div class="mt-4 pt-4 border-t border-gray-700/50">
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i> Deduction finder</li>
-                        <li class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i> Quarterly estimates</li>
-                        <li class="flex items-center"><i class="fas fa-check-circle text-green-400 mr-2"></i> Audit support</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="py-24 px-4 bg-gradient-to-br from-slate-900 to-slate-950">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-2 gap-16 items-center">
-                <!-- Holographic Feature Visualization -->
-                <div class="relative" data-aos="fade-right">
-                    <div class="hologram-effect rounded-2xl overflow-hidden">
-                        <div class="bg-slate-900/70 backdrop-blur-sm p-8">
-                            <div class="flex justify-center mb-8">
-                                <div class="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center glow pulse">
-                                    <i class="fas fa-brain text-3xl text-white"></i>
-                                </div>
-                            </div>
-                            <h3 class="text-2xl font-bold text-center text-white mb-4">AI-Powered Insights</h3>
-                            <p class="text-gray-300 text-center mb-6">
-                                Our neural networks analyze your financial patterns to provide actionable recommendations.
-                            </p>
-                            <div class="grid grid-cols-3 gap-4">
-                                <div class="bg-slate-800/50 rounded-lg p-4 text-center">
-                                    <div class="text-blue-400 text-2xl mb-2">97%</div>
-                                    <div class="text-xs text-gray-400">Accuracy</div>
-                                </div>
-                                <div class="bg-slate-800/50 rounded-lg p-4 text-center">
-                                    <div class="text-purple-400 text-2xl mb-2">24/7</div>
-                                    <div class="text-xs text-gray-400">Monitoring</div>
-                                </div>
-                                <div class="bg-slate-800/50 rounded-lg p-4 text-center">
-                                    <div class="text-cyan-400 text-2xl mb-2">0.2s</div>
-                                    <div class="text-xs text-gray-400">Response Time</div>
-                                </div>
-                            </div>
-                        </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="service-card gradient-bg rounded-2xl p-6" data-aos="fade-up">
+                    <div class="w-14 h-14 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-money-bill-wave text-xl text-white"></i>
                     </div>
-                    
-                    <!-- Floating elements -->
-                    <div class="absolute -top-8 -left-8 w-16 h-16 rounded-full bg-blue-500/20 blur-xl"></div>
-                    <div class="absolute -bottom-8 -right-8 w-24 h-24 rounded-full bg-purple-500/20 blur-xl"></div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Income & Expense Tracking</h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Comprehensive tracking of all income sources and expenses with clear categorization and monthly summaries.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Automated transaction categorization</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Monthly financial snapshots</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Spending pattern analysis</li>
+                    </ul>
                 </div>
                 
-                <!-- Feature Content -->
-                <div data-aos="fade-left">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-6">
-                        <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent neon-text">Next-Gen</span> 
-                        Financial Intelligence
-                    </h2>
-                    <p class="text-xl text-gray-300 mb-8 leading-relaxed">
-                        Harness the power of artificial intelligence to transform your financial management. Our platform learns your spending patterns, predicts future trends, and automates complex tasks.
+                <!-- Service Card 2 -->
+                <div class="service-card gradient-bg rounded-2xl p-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-14 h-14 bg-gradient-to-r from-teal-400 to-teal-500 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-pie text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Budget Planning</h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Personalized budgeting strategies that align with your financial goals and lifestyle needs.
                     </p>
-                    <ul class="space-y-6">
-                        <li class="flex items-start gap-4">
-                            <span class="text-blue-400 mt-1">
-                                <i class="fas fa-bolt text-xl"></i>
-                            </span>
-                            <div>
-                                <h4 class="text-lg font-semibold text-white">Real-time Processing</h4>
-                                <p class="text-gray-400">Transactions categorized and analyzed in milliseconds as they occur.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-4">
-                            <span class="text-purple-400 mt-1">
-                                <i class="fas fa-shield-alt text-xl"></i>
-                            </span>
-                            <div>
-                                <h4 class="text-lg font-semibold text-white">Blockchain Security</h4>
-                                <p class="text-gray-400">Military-grade encryption and decentralized storage for your financial data.</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-4">
-                            <span class="text-cyan-400 mt-1">
-                                <i class="fas fa-robot text-xl"></i>
-                            </span>
-                            <div>
-                                <h4 class="text-lg font-semibold text-white">Predictive Analytics</h4>
-                                <p class="text-gray-400">AI forecasts cash flow, detects opportunities, and prevents financial risks.</p>
-                            </div>
-                        </li>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-teal-500 mr-2"></i> Custom budget creation</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-teal-500 mr-2"></i> Spending limit recommendations</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-teal-500 mr-2"></i> Monthly budget reviews</li>
+                    </ul>
+                </div>
+                
+                <!-- Service Card 3 -->
+                <div class="service-card gradient-bg rounded-2xl p-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-14 h-14 bg-gradient-to-r from-purple-400 to-purple-500 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-folder-open text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Digital Record Keeping</h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Secure digital organization of all your financial documents for easy access and tax preparation.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-purple-500 mr-2"></i> Receipt digitization</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-purple-500 mr-2"></i> Secure cloud storage</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-purple-500 mr-2"></i> Document categorization</li>
+                    </ul>
+                </div>
+                
+                <!-- Service Card 4 -->
+                <div class="service-card gradient-bg rounded-2xl p-6" data-aos="fade-up">
+                    <div class="w-14 h-14 bg-gradient-to-r from-blue-400 to-teal-400 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-file-invoice-dollar text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Tax Preparation Support</h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Organized financial records and documentation to simplify your tax filing process.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Year-end financial summaries</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Deduction identification</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Tax document organization</li>
+                    </ul>
+                </div>
+                
+                <!-- Service Card 5 -->
+                <div class="service-card gradient-bg rounded-2xl p-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-14 h-14 bg-gradient-to-r from-teal-400 to-blue-400 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Financial Health Analysis</h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Regular reviews of your financial position with actionable insights for improvement.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-teal-500 mr-2"></i> Net worth calculations</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-teal-500 mr-2"></i> Debt management strategies</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-teal-500 mr-2"></i> Savings progress tracking</li>
+                    </ul>
+                </div>
+                
+                <!-- Service Card 6 -->
+                <div class="service-card gradient-bg rounded-2xl p-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-14 h-14 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-graduation-cap text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Financial Education</h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Personalized coaching to help you understand and manage your finances with confidence.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-purple-500 mr-2"></i> Budgeting fundamentals</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-purple-500 mr-2"></i> Debt reduction strategies</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-purple-500 mr-2"></i> Savings goal planning</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Pricing Section -->
-    <section id="pricing" class="py-24 px-4 relative">
-        <div class="max-w-6xl mx-auto text-center mb-16" data-aos="fade-up">
-            <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">
-                <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent neon-text">Transparent</span> 
-                Pricing
-            </h2>
-            <p class="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-                Flexible plans designed for businesses of all sizes
-            </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <!-- Pricing Card 1 -->
-            <div class="gradient-bg rounded-2xl p-8 hover:shadow-xl transition-all duration-300" data-aos="fade-up">
-                <div class="text-center mb-6">
-                    <h3 class="text-2xl font-semibold text-white mb-2">Starter</h3>
-                    <p class="text-gray-400">Perfect for individuals and freelancers</p>
-                </div>
-                <div class="text-5xl font-bold text-center mb-6">
-                    <span class="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">$49</span>
-                    <span class="text-gray-400 text-lg">/month</span>
-                </div>
-                <ul class="space-y-4 mb-8">
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> Basic financial tracking</li>
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> Expense categorization</li>
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> Monthly reports</li>
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> Email support</li>
-                    <li class="flex items-center text-gray-400"><i class="fas fa-times-circle text-gray-600 mr-3"></i> AI predictions</li>
-                    <li class="flex items-center text-gray-400"><i class="fas fa-times-circle text-gray-600 mr-3"></i> Tax optimization</li>
-                </ul>
-                <a href="#contact" class="block text-center bg-gradient-to-r from-blue-500 to-cyan-500 text-white py-3 rounded-full font-medium hover:brightness-110 transition-all duration-200 shadow-lg glow">
-                    Get Started
-                </a>
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-24 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800 section-title">
+                    Client Testimonials
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Hear what others have to say about working with me
+                </p>
             </div>
             
-            <!-- Pricing Card 2 (Featured) -->
-            <div class="gradient-bg rounded-2xl p-8 border-2 border-purple-500 relative hover:shadow-xl transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
-                <div class="absolute top-0 right-0 bg-purple-500 text-white text-xs font-bold px-4 py-1 rounded-bl-lg rounded-tr-lg">
-                    MOST POPULAR
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card rounded-2xl p-6" data-aos="fade-up">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80" 
+                                 alt="Sarah T." class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Sarah T.</h4>
+                            <p class="text-blue-500 text-sm">Freelance Designer</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "Brendon transformed my financial chaos into clarity. His budgeting system helped me save 30% more each month while still enjoying life."
+                    </p>
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
                 </div>
-                <div class="text-center mb-6">
-                    <h3 class="text-2xl font-semibold text-white mb-2">Professional</h3>
-                    <p class="text-gray-400">Ideal for growing businesses</p>
+                
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" 
+                                 alt="James K." class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">James K.</h4>
+                            <p class="text-blue-500 text-sm">Small Business Owner</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "As someone who struggled with personal finances, Brendon's approach was a game-changer. He made complex concepts simple and actionable."
+                    </p>
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
                 </div>
-                <div class="text-5xl font-bold text-center mb-6">
-                    <span class="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">$99</span>
-                    <span class="text-gray-400 text-lg">/month</span>
+                
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80" 
+                                 alt="Priya M." class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Priya M.</h4>
+                            <p class="text-blue-500 text-sm">Graduate Student</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">
+                        "Working with Brendon helped me pay off my student debt faster than I imagined. His personalized approach made all the difference!"
+                    </p>
+                    <div class="flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
                 </div>
-                <ul class="space-y-4 mb-8">
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> Everything in Starter</li>
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> AI-powered insights</li>
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> Tax optimization</li>
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> Priority support</li>
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> Custom reports</li>
-                    <li class="flex items-center text-gray-400"><i class="fas fa-times-circle text-gray-600 mr-3"></i> Dedicated account manager</li>
-                </ul>
-                <a href="#contact" class="block text-center bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-full font-medium hover:brightness-110 transition-all duration-200 shadow-lg glow">
-                    Get Started
-                </a>
             </div>
             
-            <!-- Pricing Card 3 -->
-            <div class="gradient-bg rounded-2xl p-8 hover:shadow-xl transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
-                <div class="text-center mb-6">
-                    <h3 class="text-2xl font-semibold text-white mb-2">Enterprise</h3>
-                    <p class="text-gray-400">For large organizations</p>
+            <!-- Why Choose Me -->
+            <div class="mt-24" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center text-gray-800 section-title">
+                    Why Choose Me
+                </h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center p-6 gradient-bg rounded-2xl">
+                        <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-user text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Personalized Approach</h3>
+                        <p class="text-gray-600">Custom solutions tailored to your unique financial situation and goals</p>
+                    </div>
+                    
+                    <div class="text-center p-6 gradient-bg rounded-2xl">
+                        <div class="w-16 h-16 bg-gradient-to-r from-teal-400 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-lock text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Complete Confidentiality</h3>
+                        <p class="text-gray-600">Your financial information is always secure and private</p>
+                    </div>
+                    
+                    <div class="text-center p-6 gradient-bg rounded-2xl">
+                        <div class="w-16 h-16 bg-gradient-to-r from-purple-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-comments text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Clear Communication</h3>
+                        <p class="text-gray-600">Jargon-free explanations and regular updates on your financial status</p>
+                    </div>
+                    
+                    <div class="text-center p-6 gradient-bg rounded-2xl">
+                        <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-teal-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-hand-holding-usd text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Value Focused</h3>
+                        <p class="text-gray-600">Services designed to save you money and reduce financial stress</p>
+                    </div>
                 </div>
-                <div class="text-5xl font-bold text-center mb-6">
-                    <span class="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">$199</span>
-                    <span class="text-gray-400 text-lg">/month</span>
-                </div>
-                <ul class="space-y-4 mb-8">
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> Everything in Professional</li>
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> Dedicated account manager</li>
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> API access</li>
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> Custom integrations</li>
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> Advanced security</li>
-                    <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-green-400 mr-3"></i> 24/7 premium support</li>
-                </ul>
-                <a href="#contact" class="block text-center bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-3 rounded-full font-medium hover:brightness-110 transition-all duration-200 shadow-lg glow">
-                    Get Started
-                </a>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-24 px-4 relative">
-        <div class="max-w-7xl mx-auto">
+    <section id="contact" class="py-24 px-4 bg-blue-50">
+        <div class="max-w-6xl mx-auto">
             <div class="grid md:grid-cols-2 gap-12">
                 <!-- Contact Info -->
                 <div data-aos="fade-right">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-6">
-                        <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent neon-text">Connect</span> 
-                        With Us
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
+                        Let's Connect
                     </h2>
-                    <p class="text-xl text-gray-300 mb-8">
-                        Have questions or ready to transform your financial management? Our team is here to help.
+                    <p class="text-lg text-gray-600 mb-8">
+                        Ready to take control of your finances? Reach out for a free initial consultation.
                     </p>
                     
                     <div class="space-y-6">
                         <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center glow">
+                            <div class="w-12 h-12 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full flex items-center justify-center">
                                 <i class="fas fa-envelope text-white"></i>
                             </div>
                             <div>
-                                <h4 class="text-lg font-semibold text-white mb-1">Email</h4>
-                                <p class="text-gray-300">contact@nexaledger.com</p>
+                                <h4 class="text-lg font-semibold text-gray-800 mb-1">Email</h4>
+                                <p class="text-gray-600">brendon@nexaledger.com</p>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center glow">
+                            <div class="w-12 h-12 bg-gradient-to-r from-teal-400 to-teal-500 rounded-full flex items-center justify-center">
                                 <i class="fas fa-phone text-white"></i>
                             </div>
                             <div>
-                                <h4 class="text-lg font-semibold text-white mb-1">Phone</h4>
-                                <p class="text-gray-300">+1 (728) 900-8875</p>
+                                <h4 class="text-lg font-semibold text-gray-800 mb-1">Phone</h4>
+                                <p class="text-gray-600">+1 (555) 123-4567</p>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center glow">
-                                <i class="fas fa-map-marker-alt text-white"></i>
+                            <div class="w-12 h-12 bg-gradient-to-r from-purple-400 to-purple-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-comments text-white"></i>
                             </div>
                             <div>
-                                <h4 class="text-lg font-semibold text-white mb-1">Location</h4>
-                                <p class="text-gray-300">Tucson, Arizona</p>
+                                <h4 class="text-lg font-semibold text-gray-800 mb-1">Consultation</h4>
+                                <p class="text-gray-600">Free 30-minute initial consultation</p>
                             </div>
                         </div>
+                    </div>
+                    
+                    <div class="mt-12 bg-white p-6 rounded-2xl shadow-sm">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">What to Expect</h3>
+                        <ul class="space-y-3 text-gray-600">
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i> <span>Free initial consultation to discuss your needs</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i> <span>Personalized service proposal</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i> <span>Simple, transparent pricing</span></li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i> <span>Ongoing support and financial guidance</span></li>
+                        </ul>
                     </div>
                 </div>
 
                 <!-- Contact Form -->
-                <div class="gradient-bg rounded-2xl p-8 backdrop-blur-md" data-aos="fade-left">
+                <div class="bg-white rounded-2xl p-8 shadow-sm" data-aos="fade-left">
                     <form class="space-y-6">
                         <div>
-                            <label class="block text-sm text-gray-300 mb-1">Full Name</label>
-                            <input type="text" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition duration-200" placeholder="Your name">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                            <input type="text" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-300 outline-none transition duration-200" placeholder="Your name">
                         </div>
 
                         <div>
-                            <label class="block text-sm text-gray-300 mb-1">Email Address</label>
-                            <input type="email" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none transition duration-200" placeholder="you@example.com">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <input type="email" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-300 outline-none transition duration-200" placeholder="you@example.com">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                            <input type="tel" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-300 outline-none transition duration-200" placeholder="(555) 123-4567">
                         </div>
 
                         <div>
-                            <label class="block text-sm text-gray-300 mb-1">Service Interested In</label>
-                            <select class="w-full px-4 py-3 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none transition duration-200">
-                                <option>Personal Bookkeeping</option>
-                                <option>Financial Reporting</option>
-                                <option>Tax Preparation</option>
-                                <option>Business Solutions</option>
-                                <option>Enterprise Package</option>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Service Interested In</label>
+                            <select class="w-full px-4 py-3 bg-gray-50 border border-gray-200 text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-300 outline-none transition duration-200">
+                                <option>Income & Expense Tracking</option>
+                                <option>Budget Planning</option>
+                                <option>Digital Record Keeping</option>
+                                <option>Tax Preparation Support</option>
+                                <option>Financial Health Analysis</option>
+                                <option>Financial Education</option>
+                                <option>Not Sure - Need Advice</option>
                             </select>
                         </div>
 
                         <div>
-                            <label class="block text-sm text-gray-300 mb-1">Message</label>
-                            <textarea rows="4" class="w-full px-4 py-3 bg-slate-900 border border-slate-700 text-white rounded-lg focus:ring-2 focus:ring-blue-400 outline-none transition duration-200" placeholder="Tell us about your needs..."></textarea>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                            <textarea rows="4" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-300 outline-none transition duration-200" placeholder="Tell me about your financial goals and challenges..."></textarea>
                         </div>
 
-                        <button type="submit" class="w-full py-3 px-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-full hover:brightness-110 transition-all duration-200 shadow-lg glow flex items-center justify-center gap-2">
-                            <span>Send Message</span>
-                            <i class="fas fa-paper-plane"></i>
+                        <button type="submit" class="btn-primary w-full py-3 px-6 font-semibold rounded-full">
+                            Send Message
                         </button>
                     </form>
                 </div>
@@ -715,116 +618,74 @@
     </section>
 
     <!-- Footer -->
-    <footer class="gradient-bg border-t border-blue-500/20 py-12 px-6 sm:px-12">
+    <footer class="bg-white border-t border-gray-200 py-12 px-6 sm:px-12">
         <div class="max-w-7xl mx-auto">
             <div class="grid md:grid-cols-4 gap-12 items-start">
                 <!-- Logo + Tagline -->
                 <div>
                     <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center glow">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-blue-400 to-teal-400 flex items-center justify-center">
                             <svg width="20" height="20" viewBox="0 0 24 24" class="text-white">
                                 <path fill="currentColor" d="M3 22v-20l18 10-18 10z"/>
                             </svg>
                         </div>
-                        <span class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                        <span class="text-2xl font-bold text-gray-800">
                             NexaLedger
                         </span>
                     </div>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
-                        Transforming financial management through AI and blockchain technology.
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                        Personal bookkeeping services for financial clarity and freedom.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-blue-500 transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-blue-500 transition-colors"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-blue-500 transition-colors"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-500 hover:text-blue-500 transition-colors"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
 
                 <!-- Quick Links -->
                 <div>
-                    <h3 class="text-white font-semibold text-lg mb-4">Navigation</h3>
+                    <h3 class="text-gray-800 font-semibold text-lg mb-4">Navigation</h3>
                     <ul class="space-y-3">
-                        <li><a href="#services" class="text-gray-400 hover:text-blue-400 transition-colors">Services</a></li>
-                        <li><a href="#about" class="text-gray-400 hover:text-blue-400 transition-colors">Technology</a></li>
-                        <li><a href="#pricing" class="text-gray-400 hover:text-blue-400 transition-colors">Pricing</a></li>
-                        <li><a href="#contact" class="text-gray-400 hover:text-blue-400 transition-colors">Contact</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">Blog</a></li>
+                        <li><a href="#about" class="text-gray-600 hover:text-blue-500 transition-colors">About Me</a></li>
+                        <li><a href="#services" class="text-gray-600 hover:text-blue-500 transition-colors">Services</a></li>
+                        <li><a href="#testimonials" class="text-gray-600 hover:text-blue-500 transition-colors">Testimonials</a></li>
+                        <li><a href="#contact" class="text-gray-600 hover:text-blue-500 transition-colors">Contact</a></li>
                     </ul>
                 </div>
 
                 <!-- Resources -->
                 <div>
-                    <h3 class="text-white font-semibold text-lg mb-4">Resources</h3>
+                    <h3 class="text-gray-800 font-semibold text-lg mb-4">Resources</h3>
                     <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">Documentation</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">API Reference</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">Guides</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">Support Center</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">Community</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-blue-500 transition-colors">Budgeting Tips</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-blue-500 transition-colors">Financial Guides</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-blue-500 transition-colors">Tax Resources</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-blue-500 transition-colors">Blog</a></li>
                     </ul>
                 </div>
 
                 <!-- Newsletter -->
                 <div>
-                    <h3 class="text-white font-semibold text-lg mb-4">Stay Updated</h3>
-                    <p class="text-gray-400 text-sm mb-4">
-                        Subscribe to our newsletter for the latest financial insights and product updates.
+                    <h3 class="text-gray-800 font-semibold text-lg mb-4">Financial Tips</h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        Subscribe for monthly financial tips and exclusive content.
                     </p>
                     <div class="flex">
-                        <input type="email" placeholder="Your email" class="px-4 py-2 bg-slate-900 border border-slate-700 text-white rounded-l-lg w-full outline-none">
-                        <button class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 rounded-r-lg">
+                        <input type="email" placeholder="Your email" class="px-4 py-2 bg-gray-50 border border-gray-200 text-gray-800 rounded-l-lg w-full outline-none">
+                        <button class="btn-primary px-4 rounded-r-lg">
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <div class="border-t border-blue-500/20 mt-12 pt-6 text-center text-sm text-gray-500">
-                &copy; <span id="year"></span> NexaLedger Technologies. All rights reserved.
+            <div class="border-t border-gray-200 mt-12 pt-6 text-center text-sm text-gray-500">
+                &copy; <span id="year"></span> NexaLedger Personal Bookkeeping. All rights reserved.
             </div>
         </div>
     </footer>
-    
-    <!-- Chatbot Toggle Button -->
-    <button id="chat-toggle">
-        <i class="fas fa-comment-alt"></i>
-    </button>
-    
-    <!-- Chatbot Window -->
-    <div id="chat-window">
-        <div id="chat-header">
-            <i class="fas fa-robot"></i> NexaBot - AI Assistant
-        </div>
-        <div id="chat-log">
-            <div class="chat-message bot-message">
-                Hi there! 👋 I'm NexaBot, your AI financial assistant. How can I help you today?
-            </div>
-            <div class="chat-message bot-message">
-                You can ask me about:
-                <ul class="mt-2 ml-4 space-y-1">
-                    <li>• Our services</li>
-                    <li>• Pricing plans</li>
-                    <li>• Getting started</li>
-                    <li>• Bookkeeping tips</li>
-                </ul>
-            </div>
-        </div>
-        <div class="typing-indicator" id="typing">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <div id="chat-input-area">
-            <input type="text" id="user-input" placeholder="Ask me anything...">
-            <button class="send-btn" id="send-btn">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
-    </div>
-    
-    <!-- Particles.js -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     
     <script>
         // Initialize AOS
@@ -836,147 +697,6 @@
         
         // Set current year
         document.getElementById('year').textContent = new Date().getFullYear();
-        
-        // Initialize Particles.js
-        particlesJS('particles', {
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: "#0ea5e9" },
-                shape: { type: "circle" },
-                opacity: { value: 0.3, random: true },
-                size: { value: 3, random: true },
-                line_linked: {
-                    enable: true,
-                    distance: 150,
-                    color: "#8b5cf6",
-                    opacity: 0.2,
-                    width: 1
-                },
-                move: {
-                    enable: true,
-                    speed: 2,
-                    direction: "none",
-                    random: true,
-                    straight: false,
-                    out_mode: "out",
-                    bounce: false
-                }
-            },
-            interactivity: {
-                detect_on: "canvas",
-                events: {
-                    onhover: { enable: true, mode: "repulse" },
-                    onclick: { enable: true, mode: "push" },
-                    resize: true
-                }
-            },
-            retina_detect: true
-        });
-        
-        // Chatbot functionality
-        const qa = {
-            "hello": "Hello! How can I assist you with your financial management today?",
-            "hi": "Hi there! How can I help you?",
-            "services": "We offer AI-powered bookkeeping, real-time analytics, tax optimization, and financial forecasting. Which service are you interested in?",
-            "pricing": "We have three plans: Starter ($49/mo), Professional ($99/mo), and Enterprise ($199/mo). Would you like details on a specific plan?",
-            "starter": "Our Starter plan includes basic financial tracking, expense categorization, monthly reports, and email support. Perfect for individuals and freelancers!",
-            "professional": "The Professional plan includes AI-powered insights, tax optimization, priority support, and custom reports. Ideal for growing businesses.",
-            "enterprise": "Our Enterprise solution offers dedicated account management, API access, custom integrations, advanced security, and 24/7 premium support.",
-            "contact": "You can reach us at contact@nexaledger.com or call +1 (728) 900-8875. Our team is available Mon-Fri, 9AM-6PM EST.",
-            "demo": "Great! You can schedule a demo by visiting our contact page or emailing demo@nexaledger.com. When would you like to schedule?",
-            "thanks": "You're welcome! Is there anything else I can help you with?",
-            "bye": "Goodbye! Feel free to return if you have more questions. Have a great day!",
-            "help": "I can help with information about our services, pricing, getting started, and more. What would you like to know?",
-            "bookkeeping": "Our AI bookkeeping service automatically categorizes transactions, generates reports, and provides financial insights. It saves businesses an average of 10 hours per month!",
-            "tax": "Our tax optimization service helps maximize deductions, ensures compliance, and can even file taxes for you. Would you like more details?",
-            "start": "Getting started is easy! Just sign up on our website, connect your financial accounts, and our AI will begin analyzing your finances immediately.",
-            "security": "We use bank-grade encryption, blockchain technology, and multi-factor authentication to keep your financial data secure. Security is our top priority!",
-            "integration": "We integrate with QuickBooks, Xero, Stripe, Shopify, and most major financial institutions. We also offer a powerful API for custom integrations.",
-            "support": "We offer email support for Starter, priority support for Professional, and 24/7 premium support for Enterprise customers. How can I assist you?"
-        };
-        
-        const defaultResponses = [
-            "I'm not sure I understand. Could you rephrase that?",
-            "I'm still learning! Could you ask about our services, pricing, or how to get started?",
-            "I specialize in financial management. Try asking about our AI bookkeeping or tax services!",
-            "I don't have an answer for that yet. Maybe ask about our pricing plans or features?"
-        ];
-        
-        // Chatbot elements
-        const chatToggle = document.getElementById('chat-toggle');
-        const chatWindow = document.getElementById('chat-window');
-        const chatLog = document.getElementById('chat-log');
-        const userInput = document.getElementById('user-input');
-        const sendBtn = document.getElementById('send-btn');
-        const typingIndicator = document.getElementById('typing');
-        
-        // Toggle chat window
-        chatToggle.addEventListener('click', () => {
-            chatWindow.style.display = chatWindow.style.display === 'none' ? 'block' : 'none';
-        });
-        
-        // Send message function
-        function sendMessage() {
-            const msg = userInput.value.trim();
-            if (!msg) return;
-            
-            // Add user message to chat
-            addMessage(msg, 'user');
-            userInput.value = '';
-            
-            // Show typing indicator
-            typingIndicator.style.display = 'block';
-            
-            // Simulate AI thinking
-            setTimeout(() => {
-                typingIndicator.style.display = 'none';
-                getBotResponse(msg);
-            }, 1000);
-        }
-        
-        // Add message to chat log
-        function addMessage(text, sender) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('chat-message');
-            messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
-            messageDiv.textContent = text;
-            chatLog.appendChild(messageDiv);
-            
-            // Scroll to bottom
-            chatLog.scrollTop = chatLog.scrollHeight;
-        }
-        
-        // Get bot response
-        function getBotResponse(userMessage) {
-            const lowerMsg = userMessage.toLowerCase();
-            let response = "I'm still learning about financial management! Try asking about our services or pricing.";
-            
-            // Find matching response
-            for (const [key, value] of Object.entries(qa)) {
-                if (lowerMsg.includes(key)) {
-                    response = value;
-                    break;
-                }
-            }
-            
-            // If no match found, use a random default response
-            if (response === "I'm still learning about financial management! Try asking about our services or pricing.") {
-                response = defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
-            }
-            
-            addMessage(response, 'bot');
-        }
-        
-        // Event listeners
-        sendBtn.addEventListener('click', sendMessage);
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
-        
-        // Initial greeting
-        setTimeout(() => {
-            addMessage("Welcome to NexaLedger! I'm your AI assistant. How can I help you today?", 'bot');
-        }, 1000);
     </script>
 </body>
 </html>
