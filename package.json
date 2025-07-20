@@ -1,25 +1,25 @@
 {
-  "name": "nexa-ledger-static",
+  "name": "nexa-ledger",
   "version": "1.0.0",
-  "description": "Personal Bookkeeping Services Website",
   "scripts": {
-    "build": "parcel build src/index.html --dist-dir public --no-source-maps",
+    "build": "parcel build src/index.html --dist-dir public --no-source-maps --no-cache",
     "dev": "parcel src/index.html --port 3000",
-    "clean": "rm -rf dist public .parcel-cache"
+    "clean": "rm -rf dist public .parcel-cache .cache"
   },
   "dependencies": {
-    "parcel": "^2.12.0"
+    "parcel": "2.12.0"
   },
   "devDependencies": {
-    "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.3"
+    "postcss": "8.4.38",
+    "tailwindcss": "3.4.3"
   },
   "browserslist": [
     "> 0.5%",
     "last 2 versions",
     "not dead"
   ],
-  "staticFiles": {
-    "staticPath": "public"
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }
