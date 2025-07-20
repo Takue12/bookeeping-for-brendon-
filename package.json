@@ -3,21 +3,14 @@
   "version": "1.0.0",
   "description": "Advanced Personal Bookkeeping Services with AI-Powered Financial Assistant",
   "main": "backend/server.js",
+{
   "scripts": {
-    "prestart": "npm run security-check && npm run env-check",
-    "start": "node backend/server.js",
-    "dev": "NODE_ENV=development nodemon backend/server.js --watch backend",
-    "frontend": "npx http-server public -p 3002 -o -c-1",
-    "lint": "eslint . --ext .js,.jsx --fix",
-    "test": "NODE_ENV=test jest --coverage --passWithNoTests",
-    "build-frontend": "parcel build frontend/index.html --dist-dir public",
-    "security-check": "npx audit-ci --moderate",
-    "prod": "NODE_ENV=production node backend/server.js",
-    "env-check": "node -e \"require('dotenv').config(); if (!process.env.OPENAI_API_KEY) { console.error('❌ OPENAI_API_KEY missing in env'); process.exit(1); }\"",
-    "docker-build": "docker build -t nexa-ledger .",
-    "docker-run": "docker run -p 3001:3001 --env-file .env nexa-ledger",
-    "install-deps": "node scripts/install-deps.js"
-  },
+    "prebuild": "npm install --legacy-peer-deps",
+    "build-frontend": "parcel build frontend/index.html --dist-dir public --no-source-maps",
+    "build-server": "node scripts/build-server.js",
+    "start": "node backend/server.js"
+  }
+}
   "keywords": [
     "bookkeeping",
     "finance",
