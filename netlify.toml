@@ -1,12 +1,7 @@
 [build]
-  command = "npm run build-frontend && npm run build-server"
+  command = "npm install && npm run build"
   publish = "public"
 
 [build.environment]
-  NODE_VERSION = "20.12.1"
-  NPM_VERSION = "10.7.0"
-  OPENAI_API_KEY = "your-openai-key-here"  # Set in Netlify UI instead of here
-  NODE_ENV = "production"
-
-[functions]
-  directory = "functions"
+  NODE_VERSION = "18.18.2"  # LTS version known to work with Parcel
+  NPM_VERSION = "9.8.1"
