@@ -1,5 +1,6 @@
-.env
 node_modules/
-.DS_Store
-*.log
-*.pem
+dist/
+public/
+.parcel-cache/
+.cache/
+.env
