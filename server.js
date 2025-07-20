@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
 const { OpenAI } = require('openai');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -29,7 +28,8 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:"]
+      imgSrc: ["'self'", "data:"],
+      connectSrc: ["'self'", "https://api.openai.com"]
     }
   },
   hsts: { maxAge: 31536000, includeSubDomains: true }
@@ -39,16 +39,20 @@ app.use(helmet({
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per window
-  message: 'Too many requests from this IP, please try again after 15 minutes'
+  message: 'Too many requests from this IP, please try again after 15 minutes',
+  keyGenerator: (req) => {
+    return req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  }
 });
 
 // Middleware
 app.use(cors({
   origin: process.env.CORS_ORIGIN || '*',
   methods: ['POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 200
 }));
-app.use(bodyParser.json());
+app.use(express.json({ limit: '10kb' })); // Body parsing with size limit
 app.use(compression());
 app.use(morgan('combined')); // HTTP request logging
 
@@ -58,15 +62,26 @@ const openai = new OpenAI({
   timeout: 15000 // 15-second timeout
 });
 
-// POST route for chatbot with security checks
-app.post('/chat', apiLimiter, async (req, res) => {
-  // Validate request
+// Input validation middleware
+const validateChatInput = (req, res, next) => {
   if (!req.body.prompt) {
     return res.status(400).json({ error: 'Prompt is required' });
   }
+  
+  if (typeof req.body.prompt !== 'string') {
+    return res.status(400).json({ error: 'Prompt must be a string' });
+  }
+  
+  if (req.body.prompt.length > 2000) {
+    return res.status(400).json({ error: 'Prompt exceeds maximum length of 2000 characters' });
+  }
+  
+  next();
+};
 
-  // Sanitize and trim input
-  const userPrompt = req.body.prompt.toString().trim().substring(0, 2000);
+// POST route for chatbot with security checks
+app.post('/chat', apiLimiter, validateChatInput, async (req, res) => {
+  const userPrompt = req.body.prompt.trim();
 
   try {
     const chatResponse = await openai.chat.completions.create({
@@ -77,7 +92,7 @@ app.post('/chat', apiLimiter, async (req, res) => {
     });
 
     // Extract AI response
-    const aiReply = chatResponse.choices[0].message?.content || 'No response generated';
+    const aiReply = chatResponse.choices[0]?.message?.content || 'No response generated';
     
     res.json({ 
       reply: aiReply,
@@ -94,6 +109,7 @@ app.post('/chat', apiLimiter, async (req, res) => {
       status = error.status;
       if (error.status === 429) errorMessage = 'API rate limit exceeded';
       if (error.status === 401) errorMessage = 'Invalid API credentials';
+      if (error.status === 400) errorMessage = 'Invalid request to AI service';
     }
     
     res.status(status).json({ 
@@ -108,50 +124,70 @@ app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'active',
     timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// Welcome endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({
+    service: 'NexaLedger AI Bookkeeping API',
+    version: '1.0.0',
+    status: 'operational',
+    documentation: 'https://github.com/your-repo/docs'
   });
 });
 
 // Start server with HTTPS in production
-if (process.env.NODE_ENV === 'production' && 
-    process.env.HTTPS_KEY_PATH && 
-    process.env.HTTPS_CERT_PATH) {
-  
-  try {
-    const privateKey = fs.readFileSync(process.env.HTTPS_KEY_PATH, 'utf8');
-    const certificate = fs.readFileSync(process.env.HTTPS_CERT_PATH, 'utf8');
-    const credentials = { key: privateKey, cert: certificate };
+const startServer = () => {
+  if (process.env.NODE_ENV === 'production' && 
+      process.env.HTTPS_KEY_PATH && 
+      process.env.HTTPS_CERT_PATH) {
+    
+    try {
+      const privateKey = fs.readFileSync(process.env.HTTPS_KEY_PATH, 'utf8');
+      const certificate = fs.readFileSync(process.env.HTTPS_CERT_PATH, 'utf8');
+      const credentials = { key: privateKey, cert: certificate };
 
-    https.createServer(credentials, app).listen(port, () => {
-      console.log(`✅ CTHIA HTTPS server running at https://localhost:${port}`);
+      https.createServer(credentials, app).listen(port, () => {
+        console.log(`✅ NexaLedger HTTPS server running at https://localhost:${port}`);
+      });
+    } catch (err) {
+      console.error('❌ HTTPS setup failed:', err.message);
+      process.exit(1);
+    }
+  } else {
+    // HTTP server for development
+    app.listen(port, () => {
+      console.log(`✅ NexaLedger HTTP server running at http://localhost:${port}`);
     });
-  } catch (err) {
-    console.error('❌ HTTPS setup failed:', err.message);
-    process.exit(1);
   }
-} else {
-  // HTTP server for development
-  app.listen(port, () => {
-    console.log(`✅ CTHIA HTTP server running at http://localhost:${port}`);
-  });
+};
+
+// Start the server
+try {
+  startServer();
+} catch (err) {
+  console.error('❌ Server startup failed:', err);
+  process.exit(1);
 }
 
 // Handle shutdown gracefully
-process.on('SIGINT', () => {
-  console.log('\n🔴 Server shutting down gracefully');
+const shutdown = (signal) => {
+  console.log(`\n🔴 Received ${signal}. Server shutting down gracefully...`);
+  // Add any cleanup operations here
   process.exit(0);
-});
+};
 
-process.on('SIGTERM', () => {
-  console.log('\n🔴 Server terminated gracefully');
-  process.exit(0);
-});
+process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('SIGTERM', () => shutdown('SIGTERM'));
 
-process.on('uncaughtException', err => {
-  console.error('🛑 Uncaught Exception:', err);
+process.on('uncaughtException', (err, origin) => {
+  console.error('🛑 Uncaught Exception:', err, 'Origin:', origin);
   process.exit(1);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('🚨 Unhandled Rejection at:', promise, 'reason:', reason);
+  console.error('🚨 Unhandled Rejection at:', promise, 'Reason:', reason);
 });
