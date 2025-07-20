@@ -33,3 +33,15 @@ app.post('/chat', async (req, res) => {
 app.listen(3001, () => {
   console.log('✅ NexaBot backend running on http://localhost:3001');
 });
+// Serverless compatibility
+if (process.env.NETLIFY) {
+  exports.app = app;
+} else {
+  // Start the server directly when not in Netlify
+  try {
+    startServer();
+  } catch (err) {
+    console.error('❌ Server startup failed:', err);
+    process.exit(1);
+  }
+}
