@@ -1,20 +1,13 @@
-{
   "name": "nexa-ledger",
   "version": "1.0.0",
+  "description": "Advanced Personal Bookkeeping Services website",
+  "main": "index.html",
   "scripts": {
-    "build": "parcel build src/index.html src/contact.html --dist-dir public --no-source-maps --no-cache",
-    "dev": "parcel src/index.html --port 3000"
+    "dev": "npx http-server . -p 3000 -o",
+    "start": "npx http-server . -p 3000 -o",
+    "build": "echo 'Static site - no build process needed'"
   },
-  "dependencies": {
-    "parcel": "2.12.0"
-  },
-  "devDependencies": {
-    "postcss": "8.4.38",
-    "tailwindcss": "3.4.3"
-  },
-  "browserslist": [
-    "> 0.5%",
-    "last 2 versions",
-    "not dead"
-  ]
-}
+  "keywords": ["bookkeeping", "finance", "personal", "services"],
+  "author": "",
+  "license": "ISC"
+} my package j,son 
